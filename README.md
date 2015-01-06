@@ -25,8 +25,6 @@ Add the plugin to your project's `composer.json`:
 
 Because this plugin has the type `cakephp-plugin` set in it's own `composer.json`, composer knows to install it inside your `/Plugin` directory, rather than in the usual vendors file. It is recommended that you add `/Plugin/CasAuthentication` to your .gitignore file. (Why? [read this](http://getcomposer.org/doc/faqs/should-i-commit-the-dependencies-in-my-vendor-directory.md).)
 
-> Consider using "require-dev" if you only want to include DebugKit for your development environment.
-
 _[Manual]_
 
 * Download the [CasAuthentication archive](https://github.com/asaladino/cakephp_cas_authentication/zipball/master).
