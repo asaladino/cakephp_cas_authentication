@@ -1,0 +1,27 @@
+{
+    "name": "asaladino/cas_authentication",
+    "description": "CakePHP CAS Authentication",
+    "type": "cakephp-plugin",
+    "keywords": ["cakephp", "cas"],
+    "homepage": "https://github.com/asaladino/cakephp_cas_authentication",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Adam Saladino",
+            "homepage": "http://codingsimply.com",
+            "role": "Author"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/asaladino/cakephp_cas_authentication/issues",
+        "source": "https://github.com/asaladino/cakephp_cas_authentication"
+    },
+    "require": {
+        "php": ">=5.4.0",
+        "jasig/phpcas": ">=1.3.0",
+        "composer/installers": "*"
+    },
+    "extra": {
+        "installer-name": "CasAuthentication"
+    }
+}

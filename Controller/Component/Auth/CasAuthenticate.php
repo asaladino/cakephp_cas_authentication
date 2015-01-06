@@ -14,13 +14,16 @@ class CasAuthenticate extends BaseAuthenticate {
         $this->initSettings();
         $this->initCasClient();
         phpCAS::forceAuthentication();
-        return $this->findUser(phpCAS::getUser());
+        $user = $this->findUser(phpCAS::getUser());
+        return $this->saveUser($user, phpCAS::getUser());
     }
 
     /**
      * Kill all the sessions to logout.
      */
     public function logout($user) {
+        $this->initSettings();
+        $this->initCasClient();
         session_unset();
         session_destroy();
         phpCAS::logout();
@@ -44,9 +47,30 @@ class CasAuthenticate extends BaseAuthenticate {
      */
     private function findUser($username) {
         $userModel = ClassRegistry::init($this->settings['userModel']);
-        $user = $userModel->find('first', array('conditions' => array($this->settings['userModel'] . '.' . $this->settings['userField'] => strtolower($username))));
-        if(isset($user[$this->settings['userModel']])) {
+        $user = $userModel->find('first', ['conditions' => [$this->settings['userModel'] . '.' . $this->settings['userField'] => strtolower($username)]]);
+        if (isset($user[$this->settings['userModel']])) {
             return $user[$this->settings['userModel']];
+        }
+        return $user;
+    }
+
+    /**
+     * Save the user model if the user doesn't exist.
+     * @param array $user model
+     * @param string $username returned from cas.
+     * @return array $user model
+     */
+    private function saveUser($user, $username) {
+        if ($this->settings['addUserIfDoesNotExist'] && empty($user)) {
+            $userModel = ClassRegistry::init($this->settings['userModel']);
+            $user = [$this->settings['userModel'] => [
+                    $this->settings['userField'] => strtolower($username),
+                    $this->settings['passwordField'] => $this->settings['password']
+            ]];
+            if ($this->settings['hasProfile']) {
+                $user[$this->settings['profileModel']]['orientation_id'] = -1;
+            }
+            $userModel->save($user);
         }
         return $user;
     }
@@ -55,7 +79,16 @@ class CasAuthenticate extends BaseAuthenticate {
      * Init default settings.
      */
     private function initSettings() {
-        $settingsDefaults = array('version' => '2.0', 'port' => 443, 'userModel' => 'User', 'userField' => 'username');
+        $settingsDefaults = [
+            'version' => '2.0',
+            'addUserIfDoesNotExist' => true,
+            'port' => 443,
+            'userModel' => 'User',
+            'userField' => 'username',
+            'passwordField' => 'password',
+            'password' => '',
+            'hasProfile' => true,
+            'profileModel' => 'Profile'];
         foreach ($settingsDefaults as $name => $value) {
             if (!isset($this->settings[$name])) {
                 $this->settings[$name] = $value;
