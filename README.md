@@ -8,6 +8,7 @@ The master branch has the following requirements:
 
 * CakePHP 2.2.0 or greater.
 * PHP 5.4.0 or greater.
+* Jasig phpCAS 1.3.0 or greater.
 
 ## Installation
 
@@ -33,6 +34,9 @@ _[Manual]_
 * Then copy this folder into `app/Plugin/`
 
 _[Enable]_
+
+Add `CakePlugin::loadAll();` to `bootstrap.php` then implement it in the controller.
+
 ```php
 class UsersController extends AppController {
     public $components = [
