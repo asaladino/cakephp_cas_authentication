@@ -35,7 +35,11 @@ class CasAuthenticate extends BaseAuthenticate {
     private function initCasClient() {
         if (!phpCAS::isInitialized()) {
             phpCAS::setDebug($this->settings['debug']);
-            phpCAS::client($this->settings['version'], $this->settings['hostname'], $this->settings['port'], $this->settings['uri'], true);
+            phpCAS::client($this->settings['version'],
+                    $this->settings['hostname'],
+                    $this->settings['port'],
+                    $this->settings['uri'],
+                    true);
             phpCAS::setNoCasServerValidation();
         }
     }
@@ -47,7 +51,11 @@ class CasAuthenticate extends BaseAuthenticate {
      */
     private function findUser($username) {
         $userModel = ClassRegistry::init($this->settings['userModel']);
-        $user = $userModel->find('first', ['conditions' => [$this->settings['userModel'] . '.' . $this->settings['userField'] => strtolower($username)]]);
+        $user = $userModel->find('first', [
+            'conditions' => [
+                $this->settings['userModel'] . '.' . $this->settings['userField'] => strtolower($username)
+            ]
+        ]);
         if (isset($user[$this->settings['userModel']])) {
             return $user[$this->settings['userModel']];
         }
@@ -68,7 +76,7 @@ class CasAuthenticate extends BaseAuthenticate {
                     $this->settings['passwordField'] => $this->settings['password']
             ]];
             if ($this->settings['hasProfile']) {
-                $user[$this->settings['profileModel']]['orientation_id'] = -1;
+                $user[$this->settings['profileModel']] = [];
             }
             $userModel->save($user);
         }
