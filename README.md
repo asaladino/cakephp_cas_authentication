@@ -19,7 +19,7 @@ Add the plugin to your project's `composer.json`:
 ```javascript
 {
   "require": {
-    "asaladino/cakephp_cas_authentication": "1.0.*"
+    "asaladino/cas_authentication": "1.0.*"
   }
 }
 ```
