@@ -3,7 +3,7 @@
     "description": "CakePHP CAS Authentication",
     "type": "cakephp-plugin",
     "keywords": ["cakephp", "cas"],
-    "homepage": "https://github.com/asaladino/cakephp_cas_authentication",
+    "homepage": "http://codingsimply.com/projects/cakephp-cas-auth-component",
     "license": "MIT",
     "authors": [
         {
